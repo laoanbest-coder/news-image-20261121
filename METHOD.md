@@ -1,70 +1,76 @@
-# Method — news-image-20261121 v8
+# METHOD — v9, 21 November 2026 world news in one image
 
 ## What this entry is
 
-A program that writes one 1024×1024 image summing up the world news
-of Saturday 21 November 2026. The entry point is `main.py`
-(stdlib only): it decodes `entry.png.b64` and writes
-`/output/entry.png`. The picture itself is drawn by `compose_v8.py`
-(Pillow), which lays out the whole front page in code and pastes in
-13 generated illustrations from `art/`.
+A single 1024×1024 newspaper front page summarising world news for
+Saturday 21 November 2026. All 35 stories, every number and every
+date come from a written research plan whose figures were checked
+against at least two independent sources each (single-source items
+are labelled SINGLE in the plan and printed without extra numbers).
+Nothing on the page is invented, and no number is carried over from
+the 20 November entry — every figure was re-checked for 21 November.
 
-## Facts
+## Date discipline (the part that matters most)
 
-All 35 stories, numbers and dates were checked against at least two
-independent sources on 21 November 2026 (Chicago) before the page
-was drawn, and are recorded in the build plan:
+Several big stories happened on Friday 20 November but were reported
+on Saturday 21 November. The page never moves them:
 
-- 13 main stories: Markets (S&P 500 −3.7% Friday close, 7th
-  straight loss, into correction), BepiColombo (capture burn due
-  18:24 UTC, 8 years, 10bn km), Kyiv aftermath (110+ missiles,
-  400+ drones, 9 killed, 3 bridges hit), COP31 (no deal, 3rd draft
-  due Saturday), Geneva (128 nations agree killer-robot path),
-  Washington (FBI and USDA hacked, reported Friday), Sinaloa
-  ('El Chapo Isidro' captured Friday night, announced Saturday),
-  Hormuz (two tankers hit, Iran strikes weighed), Barcelona
-  (daraxonrasib trial, tumours undetectable in 1 in 12),
-  Brussels (EU–UK three deals agreed Friday), Copenhagen
-  (Denmark expels Russian attaché, announced Friday), Rome
-  (cost-of-living protests, 25 countries), Peru (M6.7 quake,
-  Friday 19:09 local, Saturday 00:09 UTC).
-- 22 ALSO one-liners: Gaza, Madrid, Brasília, Port-au-Prince,
-  Cape Town, Nigeria, Basra, Paris, New York, Washington
-  (measles), Kampala, Geneva (CERN), Space (Voyager 1), Japan
-  (air taxi), Buenos Aires, Turkana, Tokyo (oil deal), Tokyo
-  (China ties), San Francisco (Riemann proof claim), Sport,
-  Melbourne, Florida.
-- Region counts: Europe 10, Americas 12, Asia 3, Africa 4,
-  Middle East 3, Space/Global 2, Oceania 1. Total 35.
+- The Kyiv attack happened overnight 19–20 Nov (110+ missiles,
+  400+ drones). Only the follow-ups are 21 Nov: Ukraine hit 3
+  launchers; the Kryvyi Rih strike (evening 20 Nov) killed a boy,
+  7, and a paramedic; injured 47 by 21 Nov.
+- Poland airspace breach, EU–UK deals, Denmark expulsion and the
+  FBI/USDA hacks were all Friday 20 Nov (first reported Friday).
+- The cancer-pill trial was presented Friday 20 Nov in Barcelona.
+- Market closes (S&P −3.7%, Nasdaq −5.3%, Nikkei −5.1%) are Friday
+  closes, printed as the weekly wrap.
+- The Peru quake was Friday 19:09 local time, which is Saturday
+  00:09 UTC — labelled "Fri evening (Sat 00:09 UTC)".
+- BepiColombo's capture burn is DUE at 18:24 UTC on 21 Nov, not
+  done — printed as "due tonight 18:24 UTC".
+- COP31 has no deal as of 21 Nov; a third draft is expected
+  Saturday. El Chapo Isidro was captured Friday night and announced
+  Saturday, so it is legitimately a 21 Nov story.
 
-## Date rules
+The DATE CHECK box on the page states all of this in plain sight:
+left column lists what was reported Friday, right column lists what
+is still due tonight.
 
-A story that happened on 20 November but was reported on 21
-November is never relabelled as a 21 November event. The DATE
-CHECK box on the page says so in plain sight: the Kyiv attack,
-the Poland airspace breach, the EU–UK deals, the Denmark
-expulsion, the FBI/USDA hacks and the cancer-pill presentation
-were all Friday 20 November; the Peru quake was Friday evening
-local time (Saturday 00:09 UTC). Events still due when the page
-was drawn — the BepiColombo burn at 18:24 UTC, the COP31 third
-draft, a decision on new Iran strikes — are printed as "due",
-never as done.
+## Conflicts found while researching
 
-## Pictures
+- Kyiv death toll: Reuters said 8, Kyiv Post / Zelenskyy said 9.
+  The page prints "9 killed" (at least 9, per Kyiv Post) and
+  "3 bridges hit".
+- S&P Friday move: Reuters/CNBC and One Turn agree on −3.7% at the
+  close; one source said −3.5% intraday. The page prints the
+  −3.7% close.
 
-The 13 illustrations were generated fresh for this version in a
-bold linocut woodcut style (deep navy, warm cream, brick red),
-one per main story. They carry no text, letters or numbers; every
-word on the page is drawn by the compose script. The world map
-is drawn in code too: simplified continent polygons in navy on
-white, with 13 numbered red dots (leader lines where the European
-cluster is too tight for numbers to sit on the dots).
+## How the page is made
 
-## Determinism
+`compose_v9.py` (Python 3, Pillow only) draws everything in code:
+masthead, numbers ticker, hero lead, two lead cards, ten feature
+rows, the map panel, the ALSO list, the DATE CHECK box and the
+footer. The 13 illustrations are generated editorial images with no
+text in them, stored in art/ as single-line base64 files; the script
+crops them to the slots they fill. All text on the page is drawn by
+the script, so it is pixel-exact.
 
-`compose_v8.py` uses fixed fonts (DejaVu, bundled with the OS),
-fixed colours, fixed geometry, no network, no randomness and no
-timestamps, so it draws identical bytes on every run. `main.py`
-only base64-decodes `entry.png.b64`, so two runs of it are
-byte-identical by construction. Both were checked before
-submission: the PNG is 1024×1024 and under 1 MiB.
+The map is a stylised equirectangular world map drawn from rough
+continent outlines. The 13 numbered dots sit on the real
+longitude/latitude of each main story (New York, Darmstadt for the
+Mercury mission's control centre, Kyiv, Antalya, Geneva, Washington,
+Sinaloa, Hormuz, Barcelona, Brussels, Copenhagen, Rome, Junín).
+Where dots would overlap in the Europe cluster, a small deterministic
+repulsion pass moves the numbered badges apart and draws a leader
+line back to the true spot.
+
+## Checks run before submission
+
+- `compose_v9.py` builds entry.png (1024×1024, under 1 MiB) and
+  entry.png.b64 (single line).
+- `main.py` runs twice; both outputs are byte-identical (sha256
+  compared).
+- The kit's `check` passes 14/0 on the worktree with the submitted
+  transcripts bundle.
+- No network is used at runtime; the entrypoint is standard
+  library only.
