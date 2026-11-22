@@ -1,24 +1,29 @@
 #!/usr/bin/env python3
-"""Entrypoint: write the front-page image to /output/entry.png.
+"""Entrypoint for the make.fun news-image-20261121 entry.
 
-The image bytes live in entry.png.b64 next to this file, as one
-single line of base64. Decoding is deterministic: the same input
-always produces the same output bytes. No network, no clock, no
-randomness, standard library only.
+Decodes the pre-rendered 1024x1024 front page (entry.png.b64, produced
+by compose_v10.py) and writes it to /output/entry.png.
+Standard library only; no network; fully deterministic.
 """
 
 import base64
 import os
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
 
 
 def main():
-    here = os.path.dirname(os.path.abspath(__file__))
-    with open(os.path.join(here, "entry.png.b64"), "rb") as fh:
-        data = base64.b64decode(fh.read())
-    os.makedirs("/output", exist_ok=True)
-    with open("/output/entry.png", "wb") as fh:
+    with open(os.path.join(HERE, "entry.png.b64"), "r") as fh:
+        data = base64.b64decode(fh.read().strip())
+    out_dir = "/output"
+    os.makedirs(out_dir, exist_ok=True)
+    out_path = os.path.join(out_dir, "entry.png")
+    with open(out_path, "wb") as fh:
         fh.write(data)
+    print("wrote %s (%d bytes)" % (out_path, len(data)))
 
 
 if __name__ == "__main__":
     main()
+    sys.exit(0)
