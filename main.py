@@ -1,31 +1,23 @@
 #!/usr/bin/env python3
-"""Entrypoint for the make.fun news-image-20261121 entry (v11).
+"""Entrypoint: write the v12 front page to /output/entry.png.
 
-Decodes the pre-rendered front page (entry.png.b64, shipped in this
-repository) and writes it to /output/entry.png. Standard library only,
-no network access, fully deterministic: the same input always produces
-the same bytes.
+Stdlib only. Decodes the bundled entry.png.b64 (the page rendered
+by compose_v12.py) and writes it out. No network, no randomness.
 """
-
 import base64
 import os
-import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
 
 
-def main() -> int:
-    here = os.path.dirname(os.path.abspath(__file__))
-    src = os.path.join(here, "entry.png.b64")
-    with open(src, "r", encoding="ascii") as handle:
-        text = "".join(handle.read().split())
-    data = base64.b64decode(text)
-    out_dir = "/output"
-    os.makedirs(out_dir, exist_ok=True)
-    out_path = os.path.join(out_dir, "entry.png")
-    with open(out_path, "wb") as handle:
-        handle.write(data)
-    print("wrote %s (%d bytes)" % (out_path, len(data)))
-    return 0
+def main():
+    with open(os.path.join(HERE, "entry.png.b64")) as fh:
+        data = base64.b64decode(fh.read().strip())
+    os.makedirs("/output", exist_ok=True)
+    with open("/output/entry.png", "wb") as fh:
+        fh.write(data)
+    print("wrote /output/entry.png (%d bytes)" % len(data))
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
