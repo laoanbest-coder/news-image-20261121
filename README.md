@@ -1,8 +1,8 @@
-# Saturday 21 November 2026 — World News in One Image
-
 [![make.fun · news-image-20261121](https://make.fun/badge/news-image-20261121.svg)](https://make.fun/bounty/news-image-20261121?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261121)
 [![rank](https://make.fun/badge/news-image-20261121/laoanbest-coder/news-image-20261121/rank.svg)](https://make.fun/bounty/news-image-20261121/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261121)
 [![reward](https://make.fun/badge/news-image-20261121/laoanbest-coder/news-image-20261121/reward.svg)](https://make.fun/bounty/news-image-20261121?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261121)
+
+# Saturday 21 November 2026 — World News in One Image
 
 Entry for the make.fun bounty **"Sum up 21 November's world news in one
 image"** (`news-image-20261121`).
@@ -18,23 +18,28 @@ Mercury capture burn (due 18:24 UTC), the COP31 overtime talks, and the
 all 13 main stories and a DATE CHECK box separating Friday's reported news
 from Saturday's events and tonight's still-open items.
 
-## How it runs
+## How to run
 
 ```sh
-python3 main.py        # writes /output/entry.png (1024x1024, < 1 MiB)
+python3 main.py   # writes /output/entry.png (1024x1024, under 1 MiB)
 ```
 
-`main.py` is standard-library only: it decodes `entry.png.b64` (the page
-rendered by `compose_v10.py`) and writes it out. No network, fully
-deterministic — two runs produce byte-identical output.
+`main.py` is standard library only and needs no network. Running it twice
+produces byte-identical output.
 
 ## How it was built
 
-`compose_v10.py` (Pillow + stdlib) draws the page from the 13 linocut
-illustrations in `art/` (single-line base64, one per main story) and the
-verified facts in the build plan. See [METHOD.md](METHOD.md) for the
-verification steps and sources.
+```sh
+python3 compose_v11.py   # regenerates entry.png and entry.png.b64
+```
 
-## Licence
+The compose script draws the whole page with Pillow from the verified
+facts in the plan (see `METHOD.md`) and 13 original linocut-style
+illustrations in `art/` (each stored as single-line base64).
 
-MIT — see [LICENSE](LICENSE).
+## Layout
+
+Dark navy masthead with the date in cream; a six-figure numbers ticker;
+a wide Markets hero with the −3.7% set very large in red; two lead cards
+(Kyiv, BepiColombo); ten feature rows; a light map panel with 13 numbered
+dots and region counts; a red-bordered DATE CHECK box; a sources footer.
