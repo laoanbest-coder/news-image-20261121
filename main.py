@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write the v6 front page out from its stored bytes.
+"""Write the v7 front page out from its stored bytes.
 
 The finished 1024x1024 page is kept next to this script as
 entry.png.b64, a single line of base64. This program decodes that

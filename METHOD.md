@@ -1,4 +1,4 @@
-# Method record — news-image-20261121 (v6)
+# Method record — news-image-20261121 (v7)
 
 Bounty: "Sum up 21 November's world news in one image" (make.fun,
 slug `news-image-20261121`, $100, 50 places paid, entries close
@@ -14,34 +14,45 @@ top-52 playoff. Limits: max 10 submissions/day, max 20 total per account.
 5. Dense but clear: lots of information, still readable; mind small details.
 6. Text must be instantly legible to a vision model: big, high contrast.
 
-## v6 — fresh build for 21 November (same pipeline as the 20 Nov entry,
-## which scored 97.54% / 97.47% provisional in development)
-- Generator: `compose_v6.py` (Pillow; same layout and geometry as the
-  20 Nov build). All content is new for 21 Nov: new research, new
-  numbers, new dates, new illustrations. Nothing is reused from the
-  20 Nov image or its art assets.
-- Research: every figure checked against at least two independent
-  sources where possible (see v6-plan.md in the build directory for
-  the full verification table). One Turn's 21 Nov daily page was used
-  only for one-line ALSO items, flagged single-source in the plan.
-- The 13 card illustrations are generated editorial images stored as
-  single-line base64 JPEGs in `art/` (chart, planet, kyiv, globe,
-  robot, hack, raid, tanker, pill, rings, shadow, protest, quake),
-  each centre-cropped to its card area (leads 315x108, features
-  185x52) and pasted in by the compose script. No fact, number or
-  date changed between the plan and the page.
+## v7 — same verified facts as v6, rebuilt page
+- Version 6 ("Ample Sonar") scored 96.94% in development (11 won,
+  1 drawn, 0 lost). Version 7 changes the presentation, not the facts:
+  every number, date and wording below is the same verified set from
+  v6-plan.md in the build directory. No figure was re-researched and
+  none was changed.
+- New layout (vs v6's light masthead, 6-stat strip, 3 equal lead cards,
+  2x5 feature grid, navy map block): a dark navy masthead band with the
+  date in cream, a one-line numbers ticker, one wide hero lead (Markets)
+  with the −3.7% figure printed large in red, two lead cards with
+  portrait illustration thumbs on the left, ten feature stories as
+  horizontal rows with left thumbs, a LIGHT map panel (navy continents
+  on white, replacing v6's navy block), the ALSO list, a compact
+  DATE CHECK box and the footer. Same 35 stories (13 main + 22 ALSO),
+  same region counts, same DATE CHECK facts.
+- New illustrations: all 13 are fresh generations in bold linocut
+  woodcut style (deep navy, warm cream, brick red), each a different
+  composition from v6's — wide falling-chart panorama for the hero,
+  portrait Mercury approach and dawn Kyiv skyline for the leads, and
+  ten new feature scenes (globe + thermometer, robot hand + drone,
+  padlock + server room, helicopter searchlight, tanker at sunset,
+  glowing capsule, interlocking rings, foggy street figure, crowd
+  from above, cracked mountain road). Stored as single-line base64
+  JPEGs in `art/` (hero 460x168, leads 140x152, features 100x58),
+  centre-cropped by `prep_art_v7.py`. No fact, number or date changed
+  between the plan and the page.
 - The illustrations were generated with no text in them, so there is
   no garbled AI lettering anywhere on the page; every word and number
   is still drawn in code. All 13 read as their subjects at full size
-  and at the 300 px test (falling chart, Mercury + spacecraft, night
-  Kyiv skyline, globe + thermometer, robot hand, server room + padlock,
-  helicopter raid, tanker, capsules, interlocking rings, shadowy
-  figure, protest crowd, cracked mountains).
+  and at the 300 px test (falling chart, Mercury + spacecraft, dawn
+  Kyiv skyline, globe + thermometer, robot hand, padlock + servers,
+  helicopter beam, tanker, capsule, rings, foggy figure, protest
+  crowd, cracked mountains).
 - `main.py` is stdlib-only: it decodes `entry.png.b64`, the finished
-  page. `compose_v6.py` is the script that decodes the art assets and
+  page. `compose_v7.py` is the script that decodes the art assets and
   builds the page deterministically.
-- Image: 1024x1024 PNG, 474,106 bytes. 300 px preview test passed
-  (masthead date, lead number −3.7% and the 6 stat numbers readable).
+- Image: 1024x1024 PNG, 612,711 bytes. 300 px preview test passed
+  (masthead date, ticker numbers, hero headline and the −3.7% display
+  figure readable).
 
 ## Date traps handled (the DATE CHECK box on the page)
 - Reported Friday 20 Nov, NOT 21 Nov: Kyiv attack (overnight 19–20 Nov),
